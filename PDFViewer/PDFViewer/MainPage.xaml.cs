@@ -74,6 +74,27 @@ namespace PDFViewer
             }
             PdfCollectionView.ItemsSource = imgPages;
         }
+
+        private void ButtonHoriz_OnClicked(object sender, EventArgs e)
+        {
+            IPdfService service = DependencyService.Get<IPdfService>();
+            var byteArrList = service.LoadPdfImagePages("Horizontal.pdf");
+
+            var isThumbnail = true;
+            var imgPages = new ObservableCollection<ImageItem>();
+            foreach (var byteArr in byteArrList)
+            {
+                if (isThumbnail)
+                {
+                    isThumbnail = false;
+                    var streamSource = ImageSource.FromStream(() => new MemoryStream(byteArr));
+                    ImageViewThumbnail.Source = streamSource;
+                }
+
+                imgPages.Add(new ImageItem(byteArr));
+            }
+            PdfCollectionView.ItemsSource = imgPages;
+        }
     }
 
     public class ImageItem

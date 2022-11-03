@@ -72,6 +72,7 @@
     <BundleResource Include="Resources\Ladders.compressed.pdf" />
     <BundleResource Include="Resources\10page.pdf" />
     <BundleResource Include="Resources\100page.pdf" />
+    <BundleResource Include="Resources\Horizontal.pdf" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

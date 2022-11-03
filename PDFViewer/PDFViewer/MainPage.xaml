@@ -8,6 +8,7 @@
             <Button Text="Ladders" Clicked="ButtonLadders_OnClicked" />
             <Button Text="10 Page" Clicked="Button10_OnClicked" />
             <Button Text="100 Page" Clicked="Button100_OnClicked" />
+            <Button Text="Horizontal" Clicked="ButtonHoriz_OnClicked" />
         </StackLayout>
         <Image x:Name="ImageViewThumbnail" Aspect="AspectFit" WidthRequest="100" HeightRequest="160" />
         <CollectionView x:Name="PdfCollectionView" 
