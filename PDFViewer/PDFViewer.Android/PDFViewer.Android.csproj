@@ -16,7 +16,6 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v12.0</TargetFrameworkVersion>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
@@ -92,7 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PDFViewer\PDFViewer.csproj">
-      <Project>{41409EEE-38C2-4BAD-886C-F64FDBAB74DB}</Project>
+      <Project>{EF5D1261-7C92-4D43-BF8A-E3D95F986FFA}</Project>
       <Name>PDFViewer</Name>
     </ProjectReference>
   </ItemGroup>
