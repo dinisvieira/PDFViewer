@@ -67,7 +67,11 @@
     <Compile Include="AppDelegate.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
+    <Compile Include="PdfService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <BundleResource Include="Resources\Ladders.compressed.pdf" />
+    <BundleResource Include="Resources\10page.pdf" />
+    <BundleResource Include="Resources\100page.pdf" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
