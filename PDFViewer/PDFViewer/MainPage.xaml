@@ -4,7 +4,7 @@
              x:Class="PDFViewer.MainPage">
 
     <StackLayout>
-        <StackLayout Orientation="Horizontal">
+        <StackLayout Orientation="Horizontal" Margin="0,10,0,0">
             <Button Text="Ladders" Clicked="ButtonLadders_OnClicked" />
             <Button Text="10 Page" Clicked="Button10_OnClicked" />
             <Button Text="100 Page" Clicked="Button100_OnClicked" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using Xamarin.Forms;
 
@@ -14,7 +15,7 @@ namespace PDFViewer
 
         private void ButtonLadders_OnClicked(object sender, EventArgs e)
         {
-            var canParse = double.TryParse(MultiplierEntry.Text, out double multiplier);
+            var canParse = double.TryParse(MultiplierEntry.Text, System.Globalization.NumberStyles.Any,CultureInfo.InvariantCulture, out double multiplier);
             if (!canParse)
             {
                 multiplier = 1.0;
@@ -41,7 +42,7 @@ namespace PDFViewer
 
         private void Button10_OnClicked(object sender, EventArgs e)
         {
-            var canParse = double.TryParse(MultiplierEntry.Text, out double multiplier);
+            var canParse = double.TryParse(MultiplierEntry.Text, System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out double multiplier);
             if (!canParse)
             {
                 multiplier = 1.0;
@@ -68,7 +69,7 @@ namespace PDFViewer
 
         private void Button100_OnClicked(object sender, EventArgs e)
         {
-            var canParse = double.TryParse(MultiplierEntry.Text, out double multiplier);
+            var canParse = double.TryParse(MultiplierEntry.Text, System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out double multiplier);
             if (!canParse)
             {
                 multiplier = 1.0;
@@ -95,7 +96,7 @@ namespace PDFViewer
 
         private void ButtonHoriz_OnClicked(object sender, EventArgs e)
         {
-            var canParse = double.TryParse(MultiplierEntry.Text, out double multiplier);
+            var canParse = double.TryParse(MultiplierEntry.Text, System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out double multiplier);
             if (!canParse)
             {
                 multiplier = 1.0;
