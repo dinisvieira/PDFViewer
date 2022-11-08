@@ -9,6 +9,7 @@
             <Button Text="10 Page" Clicked="Button10_OnClicked" />
             <Button Text="100 Page" Clicked="Button100_OnClicked" />
             <Button Text="Horizontal" Clicked="ButtonHoriz_OnClicked" />
+            <Entry x:Name="MultiplierEntry" Text="1.0" WidthRequest="60" ReturnType="Done" Keyboard="Numeric" IsTextPredictionEnabled="False" IsSpellCheckEnabled="False" />
         </StackLayout>
         <Image x:Name="ImageViewThumbnail" Aspect="AspectFit" WidthRequest="100" HeightRequest="160" />
         <CollectionView x:Name="PdfCollectionView" 

@@ -11,7 +11,7 @@ namespace PDFViewer.iOS
 {
     internal class PdfService : IPdfService
     {
-        public byte[] LoadPdfThumbnail(string fileName)
+        public byte[] LoadPdfThumbnail(string fileName, double resolutionMultiplier = 1.0)
         {
             try
             {
@@ -50,8 +50,13 @@ namespace PDFViewer.iOS
                     // get current context.
                     CGContext context = UIGraphics.GetCurrentContext();
                     context.SetFillColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+                    var width = pdfPage.GetBoxRect(CGPDFBox.Media).Width * resolutionMultiplier;
+                    var height = pdfPage.GetBoxRect(CGPDFBox.Media).Height * resolutionMultiplier;
+                    System.Diagnostics.Debug.WriteLine($"Page Size: {width}x{height}");
+
                     // Gets page's bounds.
-                    CGRect bounds = new CGRect(pdfPage.GetBoxRect(CGPDFBox.Media).X, pdfPage.GetBoxRect(CGPDFBox.Media).Y, pdfPage.GetBoxRect(CGPDFBox.Media).Width, pdfPage.GetBoxRect(CGPDFBox.Media).Height);
+                    CGRect bounds = new CGRect(pdfPage.GetBoxRect(CGPDFBox.Media).X, pdfPage.GetBoxRect(CGPDFBox.Media).Y, width, height);
                     if (pdfPage != null)
                     {
                         context.FillRect(bounds);
@@ -83,7 +88,7 @@ namespace PDFViewer.iOS
             }
         }
 
-        public List<byte[]> LoadPdfImagePages(string fileName)
+        public List<byte[]> LoadPdfImagePages(string fileName, double resolutionMultiplier = 1.0)
         {
             try
             {
@@ -126,8 +131,8 @@ namespace PDFViewer.iOS
                         CGContext context = UIGraphics.GetCurrentContext();
                         context.SetFillColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-                        var width = pdfPage.GetBoxRect(CGPDFBox.Media).Width;
-                        var height = pdfPage.GetBoxRect(CGPDFBox.Media).Height;
+                        var width = pdfPage.GetBoxRect(CGPDFBox.Media).Width * resolutionMultiplier;
+                        var height = pdfPage.GetBoxRect(CGPDFBox.Media).Height * resolutionMultiplier;
                         System.Diagnostics.Debug.WriteLine($"Page Size: {width}x{height}");
 
                         // Gets page's bounds.

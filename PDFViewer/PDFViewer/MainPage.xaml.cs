@@ -14,8 +14,14 @@ namespace PDFViewer
 
         private void ButtonLadders_OnClicked(object sender, EventArgs e)
         {
+            var canParse = double.TryParse(MultiplierEntry.Text, out double multiplier);
+            if (!canParse)
+            {
+                multiplier = 1.0;
+            }
+
             IPdfService service = DependencyService.Get<IPdfService>();
-            var byteArrList = service.LoadPdfImagePages("Ladders.compressed.pdf");
+            var byteArrList = service.LoadPdfImagePages("Ladders.compressed.pdf", multiplier);
 
             var imgPages = new ObservableCollection<ImageItem>();
             var isThumbnail = true;
@@ -35,8 +41,14 @@ namespace PDFViewer
 
         private void Button10_OnClicked(object sender, EventArgs e)
         {
+            var canParse = double.TryParse(MultiplierEntry.Text, out double multiplier);
+            if (!canParse)
+            {
+                multiplier = 1.0;
+            }
+
             IPdfService service = DependencyService.Get<IPdfService>();
-            var byteArrList = service.LoadPdfImagePages("10page.pdf");
+            var byteArrList = service.LoadPdfImagePages("10page.pdf", multiplier);
 
             var isThumbnail = true;
             var imgPages = new ObservableCollection<ImageItem>();
@@ -56,8 +68,14 @@ namespace PDFViewer
 
         private void Button100_OnClicked(object sender, EventArgs e)
         {
+            var canParse = double.TryParse(MultiplierEntry.Text, out double multiplier);
+            if (!canParse)
+            {
+                multiplier = 1.0;
+            }
+
             IPdfService service = DependencyService.Get<IPdfService>();
-            var byteArrList = service.LoadPdfImagePages("100page.pdf");
+            var byteArrList = service.LoadPdfImagePages("100page.pdf", multiplier);
 
             var isThumbnail = true;
             var imgPages = new ObservableCollection<ImageItem>();
@@ -77,8 +95,14 @@ namespace PDFViewer
 
         private void ButtonHoriz_OnClicked(object sender, EventArgs e)
         {
+            var canParse = double.TryParse(MultiplierEntry.Text, out double multiplier);
+            if (!canParse)
+            {
+                multiplier = 1.0;
+            }
+
             IPdfService service = DependencyService.Get<IPdfService>();
-            var byteArrList = service.LoadPdfImagePages("Horizontal.pdf");
+            var byteArrList = service.LoadPdfImagePages("Horizontal.pdf", multiplier);
 
             var isThumbnail = true;
             var imgPages = new ObservableCollection<ImageItem>();

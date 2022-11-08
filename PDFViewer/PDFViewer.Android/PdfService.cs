@@ -15,7 +15,7 @@ namespace PDFViewer.Droid
 {
     internal class PdfService : IPdfService
     {
-        public byte[] LoadPdfThumbnail(string fileName)
+        public byte[] LoadPdfThumbnail(string fileName, double resolutionMultiplier = 1.0)
         {
             try
             {
@@ -27,8 +27,11 @@ namespace PDFViewer.Droid
                     // Use `openPage` to open a specific page in PDF.
                     Android.Graphics.Pdf.PdfRenderer.Page page =  renderer.OpenPage(i);
                     
+                    var width = page.Width * resolutionMultiplier;
+                    var height = page.Height * resolutionMultiplier;
+
                     //Creates bitmap
-                    Bitmap bmp = Bitmap.CreateBitmap(page.Width, page.Height, Bitmap.Config.Argb8888); 
+                    Bitmap bmp = Bitmap.CreateBitmap((int)width, (int)height, Bitmap.Config.Argb8888); 
                     
                     //renderers page as bitmap, to use portion of the page use second and third parameter
                     page.Render(bmp, null, null, PdfRenderMode.ForDisplay);
@@ -51,7 +54,7 @@ namespace PDFViewer.Droid
             }
         }
 
-        public List<byte[]> LoadPdfImagePages(string fileName)
+        public List<byte[]> LoadPdfImagePages(string fileName, double resolutionMultiplier = 1.0)
         {
             try
             {
@@ -63,11 +66,13 @@ namespace PDFViewer.Droid
                 {
                     // Use `openPage` to open a specific page in PDF.
                     Android.Graphics.Pdf.PdfRenderer.Page page =  renderer.OpenPage(i);
-                    
-                    System.Diagnostics.Debug.WriteLine($"Page Size: {page.Width}x{page.Height}");
+
+                    var width = page.Width * resolutionMultiplier;
+                    var height = page.Height * resolutionMultiplier;
+                    System.Diagnostics.Debug.WriteLine($"Page Size: {width}x{height}");
 
                     //Creates bitmap
-                    Bitmap bmp = Bitmap.CreateBitmap(page.Width, page.Height, Bitmap.Config.Argb8888); 
+                    Bitmap bmp = Bitmap.CreateBitmap((int)width, (int)height, Bitmap.Config.Argb8888); 
                     
                     //renderers page as bitmap, to use portion of the page use second and third parameter
                     page.Render(bmp, null, null, PdfRenderMode.ForDisplay);
