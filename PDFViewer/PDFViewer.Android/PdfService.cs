@@ -64,6 +64,8 @@ namespace PDFViewer.Droid
                     // Use `openPage` to open a specific page in PDF.
                     Android.Graphics.Pdf.PdfRenderer.Page page =  renderer.OpenPage(i);
                     
+                    System.Diagnostics.Debug.WriteLine($"Page Size: {page.Width}x{page.Height}");
+
                     //Creates bitmap
                     Bitmap bmp = Bitmap.CreateBitmap(page.Width, page.Height, Bitmap.Config.Argb8888); 
                     
