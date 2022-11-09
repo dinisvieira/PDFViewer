@@ -3,31 +3,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PDFViewer.MainPage">
 
-    <StackLayout>
-        <StackLayout Orientation="Horizontal" Margin="0,10,0,0">
-            <Button Text="Ladders" Clicked="ButtonLadders_OnClicked" />
-            <Button Text="10 Page" Clicked="Button10_OnClicked" />
-            <Button Text="100 Page" Clicked="Button100_OnClicked" />
-            <Button Text="Horizontal" Clicked="ButtonHoriz_OnClicked" />
+    <Grid RowDefinitions="Auto,Auto,Auto,*">
+        <StackLayout Grid.Row="0" Orientation="Horizontal" Margin="0,20,0,0">
+            <Button BackgroundColor="LightBlue" WidthRequest="80" Text="Ladders" Clicked="ButtonLadders_OnClicked" />
+            <Button BackgroundColor="LightBlue" WidthRequest="80" Text="10 Page" Clicked="Button10_OnClicked" />
+            <Button BackgroundColor="LightBlue" WidthRequest="80" Text="100 Page" Clicked="Button100_OnClicked" />
+            <Button BackgroundColor="LightBlue" WidthRequest="90" Text="Horizontal" Clicked="ButtonHoriz_OnClicked" />
             <Entry x:Name="MultiplierEntry" Text="1.0" WidthRequest="60" ReturnType="Done" Keyboard="Numeric" IsTextPredictionEnabled="False" IsSpellCheckEnabled="False" />
         </StackLayout>
-        <Image x:Name="ImageViewThumbnail" Aspect="AspectFit" WidthRequest="100" HeightRequest="160" />
-        <CollectionView x:Name="PdfCollectionView" 
+        <Image Grid.Row="1" x:Name="ImageViewThumbnail" Aspect="AspectFit" WidthRequest="100" HeightRequest="160" />
+        <CollectionView x:Name="PdfCollectionView"
+                        Grid.Row="2"
+                        VerticalOptions="Start"
+                        HorizontalOptions="Fill"
+                        ItemSizingStrategy="MeasureAllItems"
+                        SelectionMode="None"
                         ItemsLayout="HorizontalList">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <Frame Padding="10" Margin="10" WidthRequest="400" HeightRequest="600" BackgroundColor="White" BorderColor="Black" HasShadow="True">
+                    <Grid WidthRequest="400" HeightRequest="600" VerticalOptions="Center" HorizontalOptions="Center">
+                        <Frame Padding="10" Margin="10" WidthRequest="400" HeightRequest="600" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="White" BorderColor="Black" HasShadow="True">
                             <Image
                                 Source="{Binding Image}"
                                 Aspect="AspectFit"
-                                HeightRequest="400"
-                                WidthRequest="600" />
+                                HeightRequest="600"
+                                WidthRequest="400" />
                         </Frame>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </StackLayout>
+    </Grid>
 
 </ContentPage>
