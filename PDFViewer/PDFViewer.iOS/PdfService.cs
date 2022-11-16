@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Policy;
+using System.Threading;
 using CoreGraphics;
 using Foundation;
 using UIKit;
@@ -12,17 +12,15 @@ namespace PDFViewer.iOS
 {
     internal class PdfService : IPdfService
     {
-        public byte[] LoadPdfThumbnail(string fileName, double resolutionMultiplier = 1.0)
+        public byte[] LoadPdfThumbnail(string fileName, double resolutionMultiplier = 1.0, CancellationToken cancellationToken = default(CancellationToken))
         {
             try
             {
                 //Load stream Stream fileStream = ;
                 var path = NSBundle.MainBundle.PathForResource(fileName, null);
-                //var path1 = NSBundle.MainBundle.PathForResource("Ladders.compressed", ".pdf");
 
                 var fileStream = File.OpenRead(path);
 
-                var list = new List<byte[]>();
                 MemoryStream stream = new MemoryStream();
 
                 // Create memory stream from file stream.
@@ -89,13 +87,11 @@ namespace PDFViewer.iOS
             }
         }
 
-        public List<byte[]> LoadPdfImagePages(string fileName, double resolutionMultiplier = 1.0)
+        public List<byte[]> LoadPdfImagePages(string fileName, double resolutionMultiplier = 1.0, CancellationToken cancellationToken = default(CancellationToken))
         {
             try
             {
-                //Load stream Stream fileStream = ;
                 var path = NSBundle.MainBundle.PathForResource(fileName, null);
-                //var path1 = NSBundle.MainBundle.PathForResource("Ladders.compressed", ".pdf");
 
                 var fileStream = File.OpenRead(path);
 

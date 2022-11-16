@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
+using System.Threading;
 using Android.Content.Res;
 using Android.Graphics;
 using Android.Graphics.Pdf;
@@ -15,35 +15,60 @@ namespace PDFViewer.Droid
 {
     internal class PdfService : IPdfService
     {
-        public byte[] LoadPdfThumbnail(string fileName, double resolutionMultiplier = 1.0)
+        public byte[] LoadPdfThumbnail(string fileName, double resolutionMultiplier = 1.0, CancellationToken cancellationToken = default(CancellationToken))
         {
             try
             {
-                //initialize PDFRenderer by passing PDF file from location.
-                PdfRenderer renderer = new PdfRenderer(GetSeekableFileDescriptor(fileName)); 
+                var fileDescriptor = GetSeekableFileDescriptor(fileName);
+                PdfRenderer renderer = new PdfRenderer(fileDescriptor); 
                 int pageCount = renderer.PageCount;
-                for(int i = 0 ; i < pageCount ; i++)
+                if(pageCount > 0)
                 {
-                    // Use `openPage` to open a specific page in PDF.
-                    Android.Graphics.Pdf.PdfRenderer.Page page =  renderer.OpenPage(i);
-                    
-                    var width = page.Width * resolutionMultiplier;
-                    var height = page.Height * resolutionMultiplier;
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        renderer?.Close();
+                        fileDescriptor?.Close();
+                        return null;
+                    }
 
-                    //Creates bitmap
-                    Bitmap bmp = Bitmap.CreateBitmap((int)width, (int)height, Bitmap.Config.Argb8888); 
+                    //We only want a thumbnail so we just get the first one
+                    PdfRenderer.Page page =  renderer.OpenPage(0);
+
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        page?.Close();
+                        renderer?.Close();
+                        fileDescriptor?.Close();
+                        return null;
+                    }
+                    else if (page != null)
+                    {
+                        var width = page.Width * resolutionMultiplier;
+                        var height = page.Height * resolutionMultiplier;
+
+                        //Creates bitmap
+                        Bitmap bmp = Bitmap.CreateBitmap((int)width, (int)height, Bitmap.Config.Argb8888); 
                     
-                    //renderers page as bitmap, to use portion of the page use second and third parameter
-                    page.Render(bmp, null, null, PdfRenderMode.ForDisplay);
+                        //Renders page as bitmap
+                        page.Render(bmp, null, null, PdfRenderMode.ForDisplay);
                     
-                    //Save the bitmap
-                    using (var stream = new MemoryStream()) {
-                        bmp.Compress(Bitmap.CompressFormat.Png, 0, stream);
-                        byte[] bitmapData = stream.ToArray();
-                        page.Close();
-                        return bitmapData; //we only return this page in this case
+                        //Save the bitmap
+                        using (var stream = new MemoryStream()) 
+                        {
+                            bmp.Compress(Bitmap.CompressFormat.Png, 0, stream);
+                            byte[] bitmapData = stream.ToArray();
+
+                            page.Close();
+                            renderer?.Close();
+                            fileDescriptor?.Close();
+
+                            return bitmapData;
+                        }
                     }
                 }
+
+                renderer?.Close();
+                fileDescriptor?.Close();
 
                 return null;
             }
@@ -54,39 +79,61 @@ namespace PDFViewer.Droid
             }
         }
 
-        public List<byte[]> LoadPdfImagePages(string fileName, double resolutionMultiplier = 1.0)
+        public List<byte[]> LoadPdfImagePages(string fileName, double resolutionMultiplier = 1.0, CancellationToken cancellationToken = default(CancellationToken))
         {
             try
             {
-                var list = new List<byte[]>();
-                //initialize PDFRenderer by passing PDF file from location.
-                PdfRenderer renderer = new PdfRenderer(GetSeekableFileDescriptor(fileName)); 
+                var imagesList = new List<byte[]>();
+                var fileDescriptor = GetSeekableFileDescriptor(fileName);
+                PdfRenderer renderer = new PdfRenderer(fileDescriptor); 
+
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    renderer?.Close();
+                    fileDescriptor?.Close();
+                    return null;
+                }
+
                 int pageCount = renderer.PageCount;
                 for(int i = 0 ; i < pageCount ; i++)
                 {
-                    // Use `openPage` to open a specific page in PDF.
-                    Android.Graphics.Pdf.PdfRenderer.Page page =  renderer.OpenPage(i);
+                    PdfRenderer.Page page =  renderer.OpenPage(i);
 
-                    var width = page.Width * resolutionMultiplier;
-                    var height = page.Height * resolutionMultiplier;
-                    System.Diagnostics.Debug.WriteLine($"Page Size: {width}x{height}");
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        page?.Close();
+                        renderer?.Close();
+                        fileDescriptor?.Close();
+                        return null;
+                    }
 
-                    //Creates bitmap
-                    Bitmap bmp = Bitmap.CreateBitmap((int)width, (int)height, Bitmap.Config.Argb8888); 
+                    if (page != null)
+                    {
+                        var width = page.Width * resolutionMultiplier;
+                        var height = page.Height * resolutionMultiplier;
+                        System.Diagnostics.Debug.WriteLine($"Page Size: {width}x{height}");
+
+                        //Creates bitmap
+                        Bitmap bmp = Bitmap.CreateBitmap((int)width, (int)height, Bitmap.Config.Argb8888); 
                     
-                    //renderers page as bitmap, to use portion of the page use second and third parameter
-                    page.Render(bmp, null, null, PdfRenderMode.ForDisplay);
+                        //Renders page as bitmap
+                        page.Render(bmp, null, null, PdfRenderMode.ForDisplay);
                     
-                    //Save the bitmap
-                    using (var stream = new MemoryStream()) {
-                        bmp.Compress(Bitmap.CompressFormat.Png, 0, stream);
-                        byte[] bitmapData = stream.ToArray();
-                        page.Close();
-                        list.Add(bitmapData);
+                        //Save the bitmap
+                        using (var stream = new MemoryStream()) 
+                        {
+                            bmp.Compress(Bitmap.CompressFormat.Png, 0, stream);
+                            byte[] bitmapData = stream.ToArray();
+                            page.Close();
+                            imagesList.Add(bitmapData);
+                        }
                     }
                 }
 
-                return list;
+                renderer?.Close();
+                fileDescriptor?.Close();
+
+                return imagesList;
             }
             catch(Exception e)
             {
